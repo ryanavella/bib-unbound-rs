@@ -1,0 +1,16 @@
+[package]
+name = "unbound"
+version = "0.1.0"
+authors = ["Ryan Avella"]
+edition = "2021"
+
+description = "Parser for the Unbound Bible format"
+documentation = "https://docs.rs/unbound"
+readme = "README.md"
+homepage = "https://github.com/ryanavella/unbound-rs"
+repository = "https://github.com/ryanavella/unbound-rs"
+license = "Unlicense OR MIT"
+keywords = ["bible", "unbound", "testament", "scripture"]
+categories = ["parser-implementations"]
+
+[dependencies]

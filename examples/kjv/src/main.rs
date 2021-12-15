@@ -6,7 +6,7 @@ fn hline() {
 
 fn main() {
     let f = File::open("kjv_apocrypha_utf8_mapped_to_NRSVA.txt").unwrap();
-    let verses = unbound::from_file(f);
+    let verses = bib_unbound::from_file(f);
     for verse in verses {
         let verse = &verse.unwrap();
         let text = verse.text();

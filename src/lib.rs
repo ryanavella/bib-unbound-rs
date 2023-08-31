@@ -382,13 +382,13 @@ impl fmt::Display for Book {
 
 /// The location of a single verse in the NRSV Bible, as a book, chapter, and verse number.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
-pub struct PositionNRSV {
+pub struct PositionNrsv {
     book: Book,
     chap_no: u16,
     vers_no: u16,
 }
 
-impl PositionNRSV {
+impl PositionNrsv {
     /// The position's `Book`.
     #[must_use]
     pub const fn book(&self) -> Book {
@@ -408,7 +408,7 @@ impl PositionNRSV {
     }
 }
 
-impl fmt::Display for PositionNRSV {
+impl fmt::Display for PositionNrsv {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if self.book == Book::Ps151 {
             write!(f, "Psalm 151:{}", self.vers_no)
@@ -589,7 +589,7 @@ impl PartialOrd for Position {
 /// Otherwise, it can possibly be a range of verses or a subverse.
 #[derive(Debug)]
 pub struct Verse {
-    pos_nrsv: Option<PositionNRSV>,
+    pos_nrsv: Option<PositionNrsv>,
     pos_orig: Position,
     text: String,
 }
@@ -609,7 +609,7 @@ impl Verse {
 
     /// The corresponding position of the line or verse in the NRSV translation.
     #[must_use]
-    pub const fn pos_nrsv(&self) -> Option<PositionNRSV> {
+    pub const fn pos_nrsv(&self) -> Option<PositionNrsv> {
         self.pos_nrsv
     }
 }
@@ -642,7 +642,7 @@ impl<B: BufRead> Iterator for Verses<B> {
                 cols.next().unwrap(),
             ) {
                 ("", "", "") => None,
-                (x, y, z) => Some(PositionNRSV {
+                (x, y, z) => Some(PositionNrsv {
                     book: Book::new(x).unwrap(),
                     chap_no: u16::from_str(y).unwrap(),
                     vers_no: u16::from_str(z).unwrap(),

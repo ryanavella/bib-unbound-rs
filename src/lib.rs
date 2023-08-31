@@ -1,6 +1,7 @@
 use std::cmp::Ordering;
 use std::fmt;
 use std::fs::File;
+use std::hash::Hash;
 use std::io::{self, BufRead, BufReader};
 use std::num::NonZeroU8;
 use std::str::FromStr;
@@ -11,7 +12,7 @@ use std::str::FromStr;
 /// books/additions used in the Catholic and Eastern Orthodox traditions.
 // todo: better abbreviations?
 #[allow(non_camel_case_types)]
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
 pub enum Book {
     /// Genesis
     Gen,
@@ -380,7 +381,7 @@ impl fmt::Display for Book {
 }
 
 /// The location of a single verse in the NRSV Bible, as a book, chapter, and verse number.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
 pub struct PositionNRSV {
     book: Book,
     chap_no: u16,
@@ -417,7 +418,7 @@ impl fmt::Display for PositionNRSV {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 enum PositionMeta {
     None,
     Subverse(NonZeroU8),
@@ -488,7 +489,7 @@ impl PositionMeta {
 /// Unlike `PositionNRSV`, this type is translation-specific.
 /// Comparisons between `Position`s only make sense within a single translation.
 /// Otherwise, the behavior is what you would expect for `PositionNRSV`.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct Position {
     book: Book,
     chap_no: u16,

@@ -563,15 +563,6 @@ impl fmt::Display for Position {
     }
 }
 
-impl Ord for Position {
-    fn cmp(&self, rhs: &Self) -> Ordering {
-        self.book
-            .cmp(&rhs.book)
-            .then(self.chap_no.cmp(&rhs.chap_no))
-            .then(self.vers_no.cmp(&rhs.vers_no))
-    }
-}
-
 impl PartialOrd for Position {
     fn partial_cmp(&self, rhs: &Self) -> Option<Ordering> {
         let ordering = self

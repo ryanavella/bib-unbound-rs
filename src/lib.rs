@@ -376,7 +376,7 @@ impl Book {
 
 impl fmt::Display for Book {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        self.as_str().fmt(f)
+        f.write_str(self.as_str())
     }
 }
 
@@ -410,10 +410,11 @@ impl PositionNrsv {
 
 impl fmt::Display for PositionNrsv {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        if self.book == Book::Ps151 {
-            write!(f, "Psalm 151:{}", self.vers_no)
+        let Self { book, chap_no, vers_no } = *self;
+        if book == Book::Ps151 {
+            write!(f, "Psalm 151:{}", vers_no)
         } else {
-            write!(f, "{} {}:{}", self.book, self.chap_no, self.vers_no)
+            write!(f, "{} {}:{}", book, chap_no, vers_no)
         }
     }
 }
@@ -535,12 +536,13 @@ impl Position {
     /// Otherwise, it is the same as `PositionNRSV`'s `vers_no`.
     #[must_use]
     pub const fn vers_end(&self) -> u16 {
-        let delta = if let PositionMeta::VerseRange(delta) = self.meta {
+        let Self { vers_no, meta, .. } = *self;
+        let delta = if let PositionMeta::VerseRange(delta) = meta {
             delta.get() as _
         } else {
             0
         };
-        self.vers_no + delta
+        vers_no + delta
     }
 
     /// The position's subverse.
@@ -550,7 +552,8 @@ impl Position {
     /// Currently, `N` does not appear to exceed `37` for any translation.
     #[must_use]
     pub const fn subverse(&self) -> Option<NonZeroU8> {
-        if let PositionMeta::Subverse(x) = self.meta {
+        let Self { meta, .. } = *self;
+        if let PositionMeta::Subverse(x) = meta {
             Some(x)
         } else {
             None
@@ -572,12 +575,12 @@ impl fmt::Display for Position {
 
 impl PartialOrd for Position {
     fn partial_cmp(&self, rhs: &Self) -> Option<Ordering> {
-        let ordering = self
-            .book
+        let Self { book, chap_no, vers_no, meta } = *self;
+        let ordering = book
             .cmp(&rhs.book)
-            .then(self.chap_no.cmp(&rhs.chap_no))
-            .then(self.vers_no.cmp(&rhs.vers_no));
-        match (self.meta, rhs.meta) {
+            .then(chap_no.cmp(&rhs.chap_no))
+            .then(vers_no.cmp(&rhs.vers_no));
+        match (meta, rhs.meta) {
             (PositionMeta::None, PositionMeta::None) => Some(ordering),
             (PositionMeta::Subverse(ref lhs), PositionMeta::Subverse(ref rhs))
             | (PositionMeta::VerseRange(ref lhs), PositionMeta::VerseRange(ref rhs)) => {

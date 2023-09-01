@@ -607,7 +607,7 @@ impl Verse {
     /// The text of the line or verse.
     #[must_use]
     pub fn text(&self) -> &str {
-        &self.text
+        &*self.text
     }
 
     /// The position of the line or verse.

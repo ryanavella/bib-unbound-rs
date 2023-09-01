@@ -483,6 +483,16 @@ impl PositionMeta {
     }
 }
 
+impl fmt::Display for PositionMeta {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            PositionMeta::Subverse(x) => write!(f, ".{x}"),
+            PositionMeta::VerseRange(x) => write!(f, "-{x}"),
+            PositionMeta::None => Ok(()),
+        }
+    }
+}
+
 /// The location of (roughly) verse-sized chunk of an arbitrary Bible translation.
 /// In the Unbound file format, these usually correspond to a single NRSV verse.
 ///
@@ -550,17 +560,13 @@ impl Position {
 
 impl fmt::Display for Position {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let (book, chap_no) = if self.book == Book::Ps151 {
+        let Self { book, chap_no, vers_no, meta } = *self;
+        let (book, chap_no) = if book == Book::Ps151 {
             ("Psalm 151", 151)
         } else {
-            (self.book.as_str(), self.chap_no)
+            (book.as_str(), chap_no)
         };
-        write!(f, "{} {}:{}", book, chap_no, self.vers_no)?;
-        match self.meta {
-            PositionMeta::Subverse(x) => write!(f, ".{x}"),
-            PositionMeta::VerseRange(x) => write!(f, "-{x}"),
-            PositionMeta::None => Ok(()),
-        }
+        write!(f, "{} {}:{}{}", book, chap_no, vers_no, meta)
     }
 }
 

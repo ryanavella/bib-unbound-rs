@@ -557,8 +557,8 @@ impl fmt::Display for Position {
         };
         write!(f, "{} {}:{}", book, chap_no, self.vers_no)?;
         match self.meta {
-            PositionMeta::Subverse(x) => write!(f, ".{}", x),
-            PositionMeta::VerseRange(x) => write!(f, "-{}", x),
+            PositionMeta::Subverse(x) => write!(f, ".{x}"),
+            PositionMeta::VerseRange(x) => write!(f, "-{x}"),
             PositionMeta::None => Ok(()),
         }
     }

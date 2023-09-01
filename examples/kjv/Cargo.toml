@@ -5,4 +5,4 @@ edition = "2021"
 publish = false
 
 [dependencies]
-unbound = { path = "../../../unbound-rs" }
+bib-unbound = { path = "../../../bib-unbound-rs" }

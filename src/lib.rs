@@ -596,7 +596,7 @@ impl PartialOrd for Position {
 /// For a translation that closely follows the NRSV numbering scheme,
 /// this is a single verse.
 /// Otherwise, it can possibly be a range of verses or a subverse.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Verse {
     pos_nrsv: Option<PositionNrsv>,
     pos_orig: Position,
